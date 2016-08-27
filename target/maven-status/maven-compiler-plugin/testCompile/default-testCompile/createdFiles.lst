@@ -1,0 +1,7 @@
+org\cs\basic\test\util\EntitiesHelper.class
+org\cs\basic\dao\TestUserDao.class
+org\cs\basic\test\util\AbstractDbUnitTestCase.class
+org\cs\basic\dao\UserDao.class
+org\cs\basic\dao\IUserDao.class
+org\cs\basic\test\util\DbUtil.class
+org\cs\basic\model\User.class
