@@ -6,6 +6,7 @@ import junit.framework.Assert;
 
 import org.cs.basic.model.User;
 
+
 public class EntitiesHelper {
 	private static User baseUser = new User(1,"admin1");
 	
@@ -26,4 +27,5 @@ public class EntitiesHelper {
 	public static void assertUser(User expected) {
 		assertUser(expected, baseUser);
 	}
+
 }
