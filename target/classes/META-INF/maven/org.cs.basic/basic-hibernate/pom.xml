@@ -86,8 +86,8 @@
 		    <artifactId>spring-test-dbunit</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>commons-beanutils</groupId>
-		    <artifactId>commons-beanutils</artifactId>
+		    <groupId>org.cs.basic</groupId>
+		    <artifactId>basic-common</artifactId>
 		</dependency>
 		
 		<!-- <dependency>
