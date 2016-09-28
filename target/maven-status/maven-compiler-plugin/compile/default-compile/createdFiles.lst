@@ -2,4 +2,3 @@ org\cs\basic\dao\IBaseDao.class
 org\cs\basic\dao\BaseDao.class
 org\cs\basic\model\Pager.class
 org\cs\basic\model\SystemContext.class
-org\cs\basic\util\EnumUtils.class

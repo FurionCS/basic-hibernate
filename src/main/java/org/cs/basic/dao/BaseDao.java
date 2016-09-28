@@ -54,8 +54,9 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return sessionFactory.getCurrentSession();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#add(java.lang.Object)
+	/**
+	 * 保存一个对象
+	 * @param t 对象
 	 */
 	@Override
 	public T add(T t) {
@@ -63,46 +64,57 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return t;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#update(java.lang.Object)
+	/**
+	 * 更新一个对象
+	 * @param t 对象
 	 */
 	@Override
 	public void update(T t) {
 		getSession().update(t);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#delete(int)
+	/**
+	 * 删除一个对象
+	 * @param id
 	 */
 	@Override
 	public void delete(int id) {
 		getSession().delete(this.load(id));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#load(int)
+	/**
+	 * 加载一个对象
+	 * @param id
 	 */
 	@Override
 	public T load(int id) {
 		return (T)getSession().load(getClz(), id);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#list(java.lang.String, java.lang.Object[])
+	/**
+	 * 获得列表
+	 * @param hql   
+	 * @param args  一组问号的值
+	 * @return
 	 */
 	public List<T> list(String hql, Object[] args) {
 		return this.list(hql, args, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#list(java.lang.String, java.lang.Object)
+	/**
+	 * 获得列表对象
+	 * @param hql
+	 * @param arg  一个问号的值
+	 * @return
 	 */
 	public List<T> list(String hql, Object arg) {
 		return this.list(hql, new Object[]{arg});
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#list(java.lang.String)
+	/**
+	 * 获得列表
+	 * @param hql
+	 * @return
 	 */
 	public List<T> list(String hql) {
 		return this.list(hql,null);
@@ -144,8 +156,12 @@ public class BaseDao<T> implements IBaseDao<T> {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#list(java.lang.String, java.lang.Object[], java.util.Map)
+	/**
+	 * 获得列表
+	 * @param hql
+	 * @param args   一组问号的值
+	 * @param alias   map<String,Object> 别名
+	 * @return
 	 */
 	public List<T> list(String hql, Object[] args, Map<String, Object> alias) {
 		hql = initSort(hql);
@@ -155,29 +171,40 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return query.list();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#list(java.lang.String, java.util.Map)
+	/**
+	 * 获得列表 通过一个别名
+	 * @param hql
+	 * @param alias map<String,Object> 
+	 * @return
 	 */
 	public List<T> listByAlias(String hql, Map<String, Object> alias) {
 		return this.list(hql, null, alias);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#find(java.lang.String, java.lang.Object[])
+	/**
+	 * 分页查找
+	 * @param hql
+	 * @param args
+	 * @return
 	 */
 	public Pager<T> find(String hql, Object[] args) {
 		return this.find(hql, args, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#find(java.lang.String, java.lang.Object)
+	/**
+	 * 分页查找
+	 * @param hql
+	 * @param arg 问号值
+	 * @return 
 	 */
 	public Pager<T> find(String hql, Object arg) {
 		return this.find(hql, new Object[]{arg});
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#find(java.lang.String)
+	/**
+	 * 分页列表
+	 * @param hql
+	 * @return
 	 */
 	public Pager<T> find(String hql) {
 		return this.find(hql,null);
@@ -202,8 +229,12 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return c;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#find(java.lang.String, java.lang.Object[], java.util.Map)
+	/**
+	 * 分页列表
+	 * @param hql
+	 * @param args  一组问号值
+	 * @param alias 别名
+	 * @return
 	 */
 	public Pager<T> find(String hql, Object[] args, Map<String, Object> alias) {
 		hql = initSort(hql);
@@ -225,36 +256,49 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return pages;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#find(java.lang.String, java.util.Map)
+	/**
+	 * 通过别名获得分页列表
+	 * @param hql
+	 * @param alias  别名
+	 * @return
 	 */
 	public Pager<T> findByAlias(String hql, Map<String, Object> alias) {
 		return this.find(hql,null, alias);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#queryObject(java.lang.String, java.lang.Object[])
+	/**
+	 * 获得对象
+	 * @param hql
+	 * @param args 一组问号值
+	 * @return
 	 */
 	public Object queryObject(String hql, Object[] args) {
 		return this.queryObject(hql, args,null);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#queryObject(java.lang.String, java.lang.Object)
+	/**
+	 * 获得对象
+	 * @param hql
+	 * @param arg 问号
+	 * @return
 	 */
 	public Object queryObject(String hql, Object arg) {
 		return this.queryObject(hql, new Object[]{arg});
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#queryObject(java.lang.String)
+	/**
+	 * 获得对象
+	 * @param hql
+	 * @return
 	 */
 	public Object queryObject(String hql) {
 		return this.queryObject(hql,null);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#updateByHql(java.lang.String, java.lang.Object[])
+	/**
+	 * 更新对象通过hql
+	 * @param hql
+	 * @param args 一组问号值
 	 */
 	public void updateByHql(String hql, Object[] args) {
 		Query query = getSession().createQuery(hql);
@@ -262,45 +306,68 @@ public class BaseDao<T> implements IBaseDao<T> {
 		query.executeUpdate();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#updateByHql(java.lang.String, java.lang.Object)
+	/**
+	 * 更新对象通过hql
+	 * @param hql
+	 * @param arg 问号值
 	 */
 	public void updateByHql(String hql, Object arg) {
 		this.updateByHql(hql,new Object[]{arg});
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#updateByHql(java.lang.String)
+	/**
+	 * 更新对象通过hql
+	 * @param hql
 	 */
 	public void updateByHql(String hql) {
 		this.updateByHql(hql,null);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#listBySql(java.lang.String, java.lang.Object[], java.lang.Class, boolean)
+	/**
+	 * 获得列表通过sql 
+	 * @param sql
+	 * @param args  问号组
+	 * @param clz   实体对象     结果包装成实体 
+	 * @param hasEntity  是否是实体
+	 * @return
 	 */
 	public <N extends Object>List<N> listBySql(String sql, Object[] args, Class<?> clz,
 			boolean hasEntity) {
 		return this.listBySql(sql, args, null, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#listBySql(java.lang.String, java.lang.Object, java.lang.Class, boolean)
+	/**
+	 * 获得列表通过sql 
+	 * @param sql
+	 * @param args  问号值
+	 * @param clz   实体对象     结果包装成实体 
+	 * @param hasEntity  是否是实体
+	 * @return
 	 */
 	public <N extends Object>List<N> listBySql(String sql, Object arg, Class<?> clz,
 			boolean hasEntity) {
 		return this.listBySql(sql, new Object[]{arg}, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#listBySql(java.lang.String, java.lang.Class, boolean)
+	/**
+	 * 获得列表通过sql 
+	 * @param sql
+	 * @param clz  实体对象     结果包装成实体 
+	 * @param hasEntity 是否是实体
+	 * @return
 	 */
 	public <N extends Object>List<N> listBySql(String sql, Class<?> clz, boolean hasEntity) {
 		return this.listBySql(sql, null, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#listBySql(java.lang.String, java.lang.Object[], java.util.Map, java.lang.Class, boolean)
+	/**
+	 * 获得列表通过sql 
+	 * @param sql
+	 * @param args  问号值
+	 * @param alias 别名
+	 * @param clz  实体对象     结果包装成实体 
+	 * @param hasEntity 是否是实体
+	 * @return
 	 */
 	public <N extends Object>List<N> listBySql(String sql, Object[] args,
 			Map<String, Object> alias, Class<?> clz, boolean hasEntity) {
@@ -315,39 +382,65 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return sq.list();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#listBySql(java.lang.String, java.util.Map, java.lang.Class, boolean)
+	/**
+	 * 通过别名获得列表
+	 * @param sql
+	 * @param alias 别名
+	 * @param clz   实体对象     结果包装成实体 
+	 * @param hasEntity 是否是实体
+	 * @return
 	 */
 	public <N extends Object>List<N> listByAliasSql(String sql, Map<String, Object> alias,
 			Class<?> clz, boolean hasEntity) {
 		return this.listBySql(sql, null, alias, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#findBySql(java.lang.String, java.lang.Object[], java.lang.Class, boolean)
+	/**
+	 * 分页获得列表
+	 * @param sql
+	 * @param args 别名
+	 * @param clz  实体对象     结果包装成实体 
+	 * @param hasEntity  是否是实体
+	 * @return
 	 */
 	public <N extends Object>Pager<N> findBySql(String sql, Object[] args, Class<?> clz,
 			boolean hasEntity) {
 		return this.findBySql(sql, args, null, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#findBySql(java.lang.String, java.lang.Object, java.lang.Class, boolean)
+	/**
+	 * 
+	 * 分页获得列表
+	 * @param sql
+	 * @param args 别名组
+	 * @param clz  实体对象     结果包装成实体 
+	 * @param hasEntity  是否是实体
+	 * @return
 	 */
 	public <N extends Object>Pager<N> findBySql(String sql, Object arg, Class<?> clz,
 			boolean hasEntity) {
 		return this.findBySql(sql, new Object[]{arg}, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#findBySql(java.lang.String, java.lang.Class, boolean)
+	/**
+	 * 分页获得列表
+	 * @param sql
+	 * @param clz 实体对象     结果包装成实体 
+	 * @param hasEntity  是否是实体
+	 * @return
 	 */
 	public <N extends Object>Pager<N> findBySql(String sql, Class<?> clz, boolean hasEntity) {
 		return this.findBySql(sql, null, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#findBySql(java.lang.String, java.lang.Object[], java.util.Map, java.lang.Class, boolean)
+	/**
+	 * 分页获得列表
+	 * @param sql
+	 * @param args   问号值
+	 * @param alias  别名
+	 * @param clz    实体对象     结果包装成实体 
+	 * @param hasEntity 是否是实体
+	 * @return
 	 */
 	public <N extends Object>Pager<N> findBySql(String sql, Object[] args,
 			Map<String, Object> alias, Class<?> clz, boolean hasEntity) {
@@ -373,14 +466,25 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return pages;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cs.baisc.dao.IBaseDao#findBySql(java.lang.String, java.util.Map, java.lang.Class, boolean)
+	/**
+	 * 分页通过别名获得列表
+	 * @param sql
+	 * @param alias 别名
+	 * @param clz   实体对象     结果包装成实体 
+	 * @param hasEntity 是否是实体
+	 * @return
 	 */
 	public <N extends Object>Pager<N> findByAliasSql(String sql, Map<String, Object> alias,
 			Class<?> clz, boolean hasEntity) {
 		return this.findBySql(sql, null, alias, clz, hasEntity);
 	}
-
+	/**
+	 * 获得对象
+	 * @param hql
+	 * @param args  问号
+	 * @param alias 别名
+	 * @return
+	 */
 	public Object queryObject(String hql, Object[] args,
 			Map<String, Object> alias) {
 		Query query = getSession().createQuery(hql);
@@ -388,7 +492,12 @@ public class BaseDao<T> implements IBaseDao<T> {
 		setParameter(query, args);
 		return query.uniqueResult();
 	}
-
+	/**
+	 * 通过别名获得对象
+	 * @param hql
+	 * @param alias 别名
+	 * @return
+	 */
 	public Object queryObjectByAlias(String hql, Map<String, Object> alias) {
 		return this.queryObject(hql,null,alias);
 	}
