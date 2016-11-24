@@ -22,6 +22,7 @@ public class SystemContext {
 	 * 列表的排序方式
 	 */
 	private static ThreadLocal<String> order = new ThreadLocal<String>();
+
 	
 	public static Integer getPageSize() {
 		return pageSize.get();
@@ -48,6 +49,7 @@ public class SystemContext {
 		SystemContext.order.set(_order);
 	}
 	
+	
 	public static void removePageSize() {
 		pageSize.remove();
 	}
@@ -63,5 +65,5 @@ public class SystemContext {
 	public static void removeOrder() {
 		order.remove();
 	}
-	
+
 }

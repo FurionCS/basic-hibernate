@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.cs.basic.model.Pager;
 import org.cs.basic.model.User;
+import org.cs.basic.model.UserDto;
 
 public interface IUserDao extends IBaseDao<User> {
 
@@ -27,5 +28,8 @@ public interface IUserDao extends IBaseDao<User> {
 
 	Pager<User> findUserBySql(String string, Object[] objects,
 			Map<String, Object> alias, Class<User> class1, boolean b);
-
+	
+	UserDto sqlObjectBY(int id);
+	
+	int getCountUser(int idstart,int idend);
 }

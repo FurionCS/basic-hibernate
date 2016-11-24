@@ -20,7 +20,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Administrator
+ * @author cs
  *
  */
 @SuppressWarnings("unchecked")
@@ -215,10 +215,10 @@ public class BaseDao<T> implements IBaseDao<T> {
 		Integer pageSize = SystemContext.getPageSize();
 		Integer pageOffset = SystemContext.getPageOffset();
 		if(pageOffset==null||pageOffset<0) pageOffset = 0;
-		if(pageSize==null||pageSize<0) pageSize = 15;
+		if(pageSize==null||pageSize<0) pageSize = 5;
 		pages.setOffset(pageOffset);
 		pages.setSize(pageSize);
-		query.setFirstResult(pageOffset).setMaxResults(pageSize);
+		query.setFirstResult(pageOffset*pageSize).setMaxResults(pageSize);
 	}
 	
 	private String getCountHql(String hql,boolean isHql) {
@@ -228,7 +228,48 @@ public class BaseDao<T> implements IBaseDao<T> {
 			c.replaceAll("fetch", "");
 		return c;
 	}
-
+	/**
+	 * 获得条数
+	 * @param sql
+	 * @return
+	 */
+	public int getCountSql(String sql){
+		return this.getCountSql(sql, null);
+	}
+	/**
+	 * 获得记录条数
+	 * @param sql
+	 * @param arg
+	 * @return
+	 */
+	public int getCountSql(String sql,Object arg){
+		// 通过问号条件获得有多少条记录
+		return this.getCountSql(sql, new Object[]{arg});
+	}
+	/**
+	 * 获得记录数
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public int getCountSql(String sql,Object[] args){
+		return this.getCountSql(sql, args, null);
+	}
+	/**
+	 * 获得记录数
+	 * @param sql
+	 * @param args
+	 * @param alias
+	 * @return
+	 */
+	public int getCountSql(String sql,Object[] args,Map<String,Object> alias){
+		SQLQuery sq=getSession().createSQLQuery(sql);
+		setParameter(sq, args);
+		setAliasParameter(sq, alias);
+		return  ((BigInteger)sq.uniqueResult()).intValue();
+	}
+	
+	
 	/**
 	 * 分页列表
 	 * @param hql
@@ -294,7 +335,38 @@ public class BaseDao<T> implements IBaseDao<T> {
 	public Object queryObject(String hql) {
 		return this.queryObject(hql,null);
 	}
-
+	
+	/**
+	 * 获得对象
+	 * @param sql
+	 * @param args
+	 * @param hasEntity
+	 * @return
+	 */
+	public Object sqlObject(String sql,Object[] args,Class<?> clz,boolean hasEntity){
+		return this.sqlObject(sql, args, null,clz,hasEntity);
+	}
+	/**
+	 * 获得对象
+	 * @param sql
+	 * @param arg
+	 * @param hasEntity
+	 * @return
+	 */
+	public Object sqlObject(String sql,Object arg,Class<?> clz,boolean hasEntity){
+		return this.sqlObject(sql, new Object[]{arg},clz,hasEntity);
+	}
+	
+	/**
+	 * 获得对象
+	 * @param sql
+	 * @param hasEntity
+	 * @return
+	 */
+	public Object sqlObject(String sql,Class<?> clz,boolean hasEntity){
+		return this.sqlObject(sql, null,clz,hasEntity);
+	}
+	
 	/**
 	 * 更新对象通过hql
 	 * @param hql
@@ -492,6 +564,26 @@ public class BaseDao<T> implements IBaseDao<T> {
 		setParameter(query, args);
 		return query.uniqueResult();
 	}
+	/**
+	 * 获得对象
+	 * @param sql
+	 * @param args
+	 * @param alias
+	 * @param hasEntity
+	 * @return
+	 */
+	public Object sqlObject(String sql, Object[] args,
+			Map<String, Object> alias,Class<?> clz,boolean hasEntity){
+		SQLQuery sq =getSession().createSQLQuery(sql);
+		setAliasParameter(sq, alias);
+		setParameter(sq, args);
+		if(hasEntity) {
+			sq.addEntity(clz);
+		} else 
+			sq.setResultTransformer(Transformers.aliasToBean(clz));
+		return sq.uniqueResult();
+	}
+	
 	/**
 	 * 通过别名获得对象
 	 * @param hql

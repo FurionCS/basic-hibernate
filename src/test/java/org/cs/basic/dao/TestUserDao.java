@@ -14,6 +14,7 @@ import java.util.Map;
 import org.cs.basic.model.Pager;
 import org.cs.basic.model.SystemContext;
 import org.cs.basic.model.User;
+import org.cs.basic.model.UserDto;
 import org.cs.basic.test.util.AbstractDbUnitTestCase;
 import org.cs.basic.test.util.EntitiesHelper;
 import org.dbunit.DatabaseUnitException;
@@ -24,6 +25,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,7 @@ public class TestUserDao extends AbstractDbUnitTestCase{
 	private SessionFactory sessionFactory;
 	@Autowired
 	private IUserDao userDao;
+	
 	
 	@Before
 	public void setUp() throws DataSetException, SQLException, IOException {
@@ -198,9 +201,21 @@ public class TestUserDao extends AbstractDbUnitTestCase{
 		assertTrue(expected.getSize()==3);
 		EntitiesHelper.assertUsers(expected.getDatas(), actuals);
 	}
-	
-	
-	
+	@Test
+	public void testSqlQuery() throws DatabaseUnitException, SQLException{
+		IDataSet ds = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
+		UserDto ud=userDao.sqlObjectBY(1);
+		Assert.assertNotNull(ud);
+		Assert.assertEquals(ud.getName(), "admin1");
+	}
+	@Test
+	public void testGetCountSql() throws DatabaseUnitException, SQLException{
+		IDataSet ds = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
+		int count =userDao.getCountUser(2, 4);
+		Assert.assertEquals(count, 1);
+	}
 	@After
 	public void tearDown() throws FileNotFoundException, DatabaseUnitException, SQLException {
 		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
