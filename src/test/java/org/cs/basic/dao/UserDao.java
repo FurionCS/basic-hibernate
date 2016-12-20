@@ -49,6 +49,18 @@ public class UserDao extends BaseDao<User> implements IUserDao {
 		return this.getCountSql(sql, new Object[]{idstart,idend}, null);
 	}
 
+	@Override
+	public void updateUsername(String name,int id) {
+        String sql="update t_user set username=? where id=?";
+        this.updateBySql(sql, new Object[]{name,id});
+	}
+
+	@Override
+	public List<Integer> getUserIdList(int id) {
+		String sql="select id from t_user where id<?";
+		return this.getListIntBySql(sql,id);
+	}
+
 
 
 }

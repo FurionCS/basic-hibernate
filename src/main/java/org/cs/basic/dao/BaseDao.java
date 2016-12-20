@@ -5,6 +5,7 @@ package org.cs.basic.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -269,7 +270,74 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return  ((BigInteger)sq.uniqueResult()).intValue();
 	}
 	
+	/**
+	 * 获得list<Integer>
+	 * @param sql
+	 * @return
+	 */
+	public List<Integer> getListIntBySql(String sql){
+		return this.getListIntBySql(sql, null);
+	}
+	/**
+	 *  获得list<Integer>
+	 * @param sql
+	 * @param arg
+	 * @return
+	 */
+	public List<Integer> getListIntBySql(String sql,Object arg){
+		return this.getListIntBySql(sql, new Object[]{arg});
+	}
+	/**
+	 *  获得list<Integer>
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public List<Integer> getListIntBySql(String sql,Object[] args){
+		SQLQuery sq=getSession().createSQLQuery(sql);
+		setParameter(sq, args);
+		List list=sq.list();
+		List<Integer> li=new ArrayList<Integer>();
+		for (int i = 0; i < list.size(); i++) {
+			li.add(Integer.valueOf(list.get(i).toString()));
+		}
+		return li;
+	}
 	
+	
+	/**
+	 * 获得list<String>
+	 * @param sql
+	 * @return
+	 */
+	public List<String> getListStringBySql(String sql){
+		return this.getListStringBySql(sql, null);
+	}
+	/**
+	 *  获得list<String>
+	 * @param sql
+	 * @param arg
+	 * @return
+	 */
+	public List<String> getListStringBySql(String sql,Object arg){
+		return this.getListStringBySql(sql, new Object[]{arg});
+	}
+	/**
+	 * 获得list<String>
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	public List<String> getListStringBySql(String sql,Object[] args){
+		SQLQuery sq=getSession().createSQLQuery(sql);
+		setParameter(sq, args);
+		List list=sq.list();
+		List<String> li=new ArrayList<String>();
+		for (int i = 0; i < list.size(); i++) {
+			li.add(list.get(i).toString());
+		}
+		return li;
+	}
 	/**
 	 * 分页列表
 	 * @param hql
@@ -394,7 +462,31 @@ public class BaseDao<T> implements IBaseDao<T> {
 	public void updateByHql(String hql) {
 		this.updateByHql(hql,null);
 	}
-
+	/**
+	 * sql更新
+	 * @param sql
+	 */
+	public void updateBySql(String sql){
+		this.updateBySql(sql, null);
+	}
+	/**
+	 * sql更新
+	 * @param sql
+	 * @param arg
+	 */
+	public void updateBySql(String sql,Object arg){
+		this.updateBySql(sql, new Object[]{arg});
+	}
+	/**
+	 * 通过sql更新
+	 * @param sql
+	 * @param args
+	 */
+	public void updateBySql(String sql,Object[] args){
+		Query query=getSession().createSQLQuery(sql);
+		setParameter(query, args);
+		query.executeUpdate();
+	}
 	/**
 	 * 获得列表通过sql 
 	 * @param sql

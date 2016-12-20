@@ -216,12 +216,24 @@ public class TestUserDao extends AbstractDbUnitTestCase{
 		int count =userDao.getCountUser(2, 4);
 		Assert.assertEquals(count, 1);
 	}
+	
+	@Test
+	public void testuUpdateBySql(){
+		userDao.updateUsername("cs", 1);
+	}
+	
+	@Test
+	public void testListUserId(){
+		List<Integer> li=userDao.getUserIdList(12);
+		Assert.assertEquals(11, li.size());
+	}
+	
 	@After
 	public void tearDown() throws FileNotFoundException, DatabaseUnitException, SQLException {
 		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 		Session s = holder.getSession(); 
 		s.flush();
 		TransactionSynchronizationManager.unbindResource(sessionFactory);
-		this.resumeTable();
+	//	this.resumeTable();
 	}
 }

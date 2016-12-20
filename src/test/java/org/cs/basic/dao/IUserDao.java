@@ -32,4 +32,8 @@ public interface IUserDao extends IBaseDao<User> {
 	UserDto sqlObjectBY(int id);
 	
 	int getCountUser(int idstart,int idend);
+	
+	void updateUsername(String name,int id);
+	
+	List<Integer> getUserIdList(int id);
 }
